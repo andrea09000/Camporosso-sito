@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Gestionale Prenotazioni</title>
+    <meta name="description" content="Accesso al gestionale prenotazioni">
+    <meta name="theme-color" content="#1a1a1a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="../images/logo.png">
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .login-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+            padding: 20px;
+        }
+
+        .login-wrapper {
+            max-width: 400px;
+            width: 100%;
+            background: #fff;
+            padding: 60px 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .login-logo img {
+            max-height: 80px;
+        }
+
+        .login-title {
+            font-size: 32px;
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-align: center;
+            color: #1a1a1a;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+        }
+
+        .login-form {
+            width: 100%;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #666;
+            font-family: 'Georgia', 'Times New Roman', serif;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 1px solid #e0e0e0;
+            font-size: 14px;
+            font-family: 'Georgia', 'Times New Roman', serif;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #1a1a1a;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .checkbox-group input {
+            width: auto;
+            margin-right: 10px;
+        }
+
+        .checkbox-group label {
+            margin-bottom: 0;
+            text-transform: none;
+            letter-spacing: normal;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 15px;
+            background: #1a1a1a;
+            color: #fff;
+            border: none;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Georgia', 'Times New Roman', serif;
+        }
+
+        .submit-button:hover {
+            background: #333;
+        }
+
+        .error-message {
+            background: #f44336;
+            color: #fff;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            text-align: center;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        @media (max-width: 480px) {
+            .login-wrapper {
+                padding: 40px 30px;
+            }
+
+            .login-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="login-section">
+        <div class="login-wrapper">
+            <div class="login-logo">
+                <img src="../images/logo.png" alt="Agriturismo il Camporosso" class="logo-img">
+            </div>
+            <h1 class="login-title">Accesso</h1>
+            
+            <div class="error-message" id="errorMessage"></div>
+            
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required autocomplete="username">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required autocomplete="current-password">
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="rememberMe" name="rememberMe">
+                    <label for="rememberMe">Ricordami (rimani loggato per 30 giorni)</label>
+                </div>
+                
+                <button type="submit" class="submit-button">Accedi</button>
+            </form>
+        </div>
+    </section>
+
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
+    <script src="../firebase-config.js"></script>
+    <script src="auth.js"></script>
+    <script>
+        // Se già loggato, reindirizza al gestionale
+        (async function() {
+            const authenticated = await isAuthenticated();
+            if (authenticated) {
+                window.location.href = 'admin.html';
+            }
+        })();
+
+        // Gestione form login
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+            const errorMessage = document.getElementById('errorMessage');
+            const submitButton = document.querySelector('.submit-button');
+            
+            // Reset errore
+            errorMessage.classList.remove('show');
+            
+            // Disabilita il bottone durante il login
+            submitButton.disabled = true;
+            submitButton.textContent = 'Accesso in corso...';
+            
+            // Effettua login (ora è async)
+            try {
+                const loginSuccess = await login(username, password, rememberMe);
+                
+                // Riabilita il bottone
+                submitButton.disabled = false;
+                submitButton.textContent = 'Accedi';
+                
+                if (loginSuccess) {
+                    // Login riuscito, reindirizza
+                    window.location.href = 'admin.html';
+                } else {
+                    // Credenziali errate
+                    errorMessage.textContent = 'Username o password errati';
+                    errorMessage.classList.add('show');
+                }
+            } catch (err) {
+                // Riabilita il bottone
+                submitButton.disabled = false;
+                submitButton.textContent = 'Accedi';
+                
+                // Mostra messaggio di errore più specifico
+                let errorText = 'Username o password errati';
+                
+                if (err.code) {
+                    if (['auth/invalid-credential', 'auth/wrong-password', 'auth/user-not-found'].includes(err.code)) {
+                        errorText = 'Credenziali non valide. Verifica username e password.';
+                    } else if (err.code === 'auth/user-disabled') {
+                        errorText = 'Account disabilitato. Contatta l\'amministratore.';
+                    } else if (err.code === 'auth/network-request-failed') {
+                        errorText = 'Problema di rete. Controlla la connessione e riprova.';
+                    } else {
+                        errorText = `Errore: ${err.message || err.code}`;
+                    }
+                } else if (err.message) {
+                    errorText = `Errore: ${err.message}`;
+                }
+                
+                errorMessage.textContent = errorText;
+                errorMessage.classList.add('show');
+                
+                console.error('Errore login completo:', err);
+            }
+        });
+    </script>
+</body>
+</html>
+

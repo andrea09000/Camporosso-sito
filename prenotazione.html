@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prenota il tuo tavolo - Ristorante Stellato</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header con logo e menu hamburger -->
+    <header class="header">
+        <div class="logo">
+            <h1>LOGO</h1>
+        </div>
+        <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </header>
+
+    <!-- Menu hamburger (chiuso di default) -->
+    <nav class="menu-overlay" id="menuOverlay">
+        <div class="menu-content">
+            <ul class="menu-list">
+                <li><a href="index.html#home">Home</a></li>
+                <li><a href="index.html#menu">Menu</a></li>
+                <li><a href="index.html#about">Chi Siamo</a></li>
+                <li><a href="prenotazione.html">Prenotazioni</a></li>
+                <li><a href="index.html#contact">Contatti</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Sezione Prenotazione -->
+    <section class="reservation-section">
+        <div class="reservation-wrapper">
+            <h1 class="reservation-title">Prenota il tuo tavolo</h1>
+            <p class="reservation-subtitle">Compila il modulo sottostante per prenotare un tavolo nel nostro ristorante</p>
+            
+            <form class="reservation-form" id="reservationForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Nome *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="surname">Cognome *</label>
+                        <input type="text" id="surname" name="surname" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Telefono *</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="date">Data *</label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="time">Orario *</label>
+                        <input type="time" id="time" name="time" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="guests">Numero di ospiti *</label>
+                        <input type="number" id="guests" name="guests" min="1" max="50" required placeholder="Es: 2">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="notes">Note speciali (opzionale)</label>
+                    <textarea id="notes" name="notes" rows="4" placeholder="Allergie alimentari, occasioni speciali, richieste particolari..."></textarea>
+                </div>
+
+
+                <button type="submit" class="submit-button">Invia prenotazione</button>
+            </form>
+        </div>
+    </section>
+
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+    <script>
+        async function waitForFirebaseDb(timeout = 10000) {
+            // Controlla sia firebaseDb che window.firebaseDb
+            if (typeof firebaseDb !== 'undefined' && firebaseDb) return firebaseDb;
+            if (typeof window !== 'undefined' && window.firebaseDb) return window.firebaseDb;
+
+            return new Promise((resolve, reject) => {
+                const start = Date.now();
+                const interval = setInterval(() => {
+                    const db = (typeof firebaseDb !== 'undefined' && firebaseDb) || (typeof window !== 'undefined' && window.firebaseDb);
+                    if (db) {
+                        clearInterval(interval);
+                        resolve(db);
+                    } else if (Date.now() - start > timeout) {
+                        clearInterval(interval);
+                        console.error('Firebase Firestore non disponibile dopo', timeout, 'ms');
+                        reject(new Error('Firebase non inizializzato. Verifica che gli script Firebase siano caricati correttamente.'));
+                    }
+                }, 100);
+            });
+        }
+
+        // Gestione form prenotazione - Salvataggio su Firebase
+        const form = document.getElementById('reservationForm');
+        if (form) {
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                // Raccogli i dati del form
+                const reservation = {
+                    name: document.getElementById('name').value,
+                    surname: document.getElementById('surname').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    date: document.getElementById('date').value,
+                    time: document.getElementById('time').value,
+                    guests: parseInt(document.getElementById('guests').value),
+                    notes: document.getElementById('notes').value || null,
+                    created_at: new Date().toISOString(),
+                    status: 'new'
+                };
+
+                try {
+                    const db = await waitForFirebaseDb();
+                    if (!db) {
+                        throw new Error('Firebase non disponibile. Verifica la connessione.');
+                    }
+
+                    console.log('Salvataggio prenotazione su Firebase...', reservation);
+                    
+                    const docRef = await db.collection('reservations').add({
+                        ...reservation,
+                        created_at: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+
+                    console.log('✅ Prenotazione salvata su Firebase con ID:', docRef.id);
+                    alert('Grazie per la tua prenotazione! Ti contatteremo a breve per confermare.');
+                    form.reset();
+                } catch (err) {
+                    console.error('❌ Errore salvataggio Firebase:', err);
+                    console.error('Dettagli:', err.message);
+                    console.error('Code:', err.code);
+                    
+                    let errorMessage = 'Errore durante il salvataggio.';
+                    if (err.code === 'permission-denied') {
+                        errorMessage = 'Errore: Permessi insufficienti. Contatta l\'amministratore.';
+                    } else if (err.message && err.message.includes('non disponibile')) {
+                        errorMessage = 'Errore: Firebase non disponibile. Verifica la connessione.';
+                    } else {
+                        errorMessage = `Errore: ${err.message || 'Errore sconosciuto'}`;
+                    }
+                    
+                    // Fallback su localStorage solo come ultima risorsa
+                    console.warn('⚠️ Fallback su localStorage (i dati non saranno visibili nel gestionale)');
+                    let reservations = JSON.parse(localStorage.getItem('reservations')) || [];
+                    reservations.push(reservation);
+                    localStorage.setItem('reservations', JSON.stringify(reservations));
+                    
+                    alert(errorMessage + '\n\nLa prenotazione è stata salvata localmente, ma potrebbe non essere visibile nel gestionale. Contatta il ristorante direttamente.');
+                    form.reset();
+                }
+
+                form.reset();
+            });
+        }
+
+        // Imposta la data minima al giorno di oggi
+        const dateInput = document.getElementById('date');
+        if (dateInput) {
+            const today = new Date().toISOString().split('T')[0];
+            dateInput.setAttribute('min', today);
+        }
+    </script>
+</body>
+</html>
+

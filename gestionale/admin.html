@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionale Prenotazioni - Admin</title>
+    <meta name="description" content="App web per la gestione delle prenotazioni">
+    <meta name="theme-color" content="#1a1a1a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Gestionale">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="../images/logo.png">
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .admin-section {
+            min-height: 100vh;
+            padding: 150px 80px 80px;
+            background: #fff;
+            color: #1a1a1a;
+        }
+
+        .admin-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .admin-title {
+            font-size: 48px;
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-align: center;
+            color: #1a1a1a;
+            margin-bottom: 60px;
+            text-transform: uppercase;
+        }
+
+        .admin-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: #f5f5f5;
+            border-radius: 4px;
+        }
+
+        .admin-search {
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .admin-search input {
+            width: 100%;
+            padding: 12px 20px;
+            border: 1px solid #e0e0e0;
+            font-size: 14px;
+            font-family: 'Georgia', 'Times New Roman', serif;
+        }
+
+        .admin-filters {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .admin-filters select {
+            padding: 12px 20px;
+            border: 1px solid #e0e0e0;
+            font-size: 14px;
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: #fff;
+        }
+
+        .btn-clear {
+            padding: 12px 30px;
+            background: #1a1a1a;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .btn-clear:hover {
+            background: #333;
+        }
+
+        .btn-logout {
+            padding: 12px 30px;
+            background: transparent;
+            color: #1a1a1a;
+            border: 1px solid #d32f2f;
+            cursor: pointer;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            color: #d32f2f;
+        }
+
+        .btn-logout:hover {
+            background: #d32f2f;
+            color: #fff;
+        }
+
+        .reservations-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+
+        .reservations-table th {
+            background: #1a1a1a;
+            color: #fff;
+            padding: 20px;
+            text-align: left;
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+
+        .reservations-table td {
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 14px;
+        }
+
+        .reservations-table tr:hover {
+            background: #f9f9f9;
+        }
+
+        .status-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .status-new {
+            background: #4CAF50;
+            color: #fff;
+        }
+
+        .status-confirmed {
+            background: #2196F3;
+            color: #fff;
+        }
+
+        .status-rejected {
+            background: #d32f2f;
+            color: #fff;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: #666;
+        }
+
+        .empty-state h3 {
+            font-size: 24px;
+            font-weight: 300;
+            margin-bottom: 20px;
+        }
+
+        .btn-confirm {
+            padding: 8px 15px;
+            background: #4CAF50;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .btn-confirm:hover {
+            background: #45a049;
+        }
+
+        .btn-delete {
+            padding: 8px 15px;
+            background: #d32f2f;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .btn-delete:hover {
+            background: #b71c1c;
+        }
+
+        .reservations-table td:nth-last-child(2),
+        .reservations-table td:last-child {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        @media (max-width: 480px) {
+            .reservations-table td[data-label="Conferma"],
+            .reservations-table td[data-label="Elimina"] {
+                text-align: center;
+            }
+
+            .btn-confirm,
+            .btn-delete {
+                width: 100%;
+            }
+        }
+
+        .btn-export {
+            padding: 12px 30px;
+            background: transparent;
+            color: #1a1a1a;
+            border: 1px solid #1a1a1a;
+            cursor: pointer;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .btn-export:hover {
+            background: #1a1a1a;
+            color: #fff;
+        }
+
+        .stats-box {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: #f5f5f5;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: 300;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .admin-section {
+                padding: 120px 40px 60px;
+            }
+
+            .admin-title {
+                font-size: 36px;
+            }
+
+            .stats-box {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+
+            .admin-controls {
+                flex-direction: column;
+                gap: 20px;
+                align-items: stretch;
+            }
+
+            .admin-search {
+                max-width: 100%;
+            }
+
+            .admin-filters {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn-logout {
+                width: 100%;
+            }
+
+            .reservations-table {
+                font-size: 12px;
+            }
+
+            .reservations-table th,
+            .reservations-table td {
+                padding: 12px 8px;
+                font-size: 11px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .admin-section {
+                padding: 100px 20px 40px;
+            }
+
+            .admin-title {
+                font-size: 28px;
+            }
+
+            .stats-box {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .stat-card {
+                padding: 20px;
+            }
+
+            .stat-number {
+                font-size: 28px;
+            }
+
+            .reservations-table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .reservations-table thead,
+            .reservations-table tbody,
+            .reservations-table tr,
+            .reservations-table td,
+            .reservations-table th {
+                display: block;
+            }
+
+            .reservations-table thead {
+                display: none;
+            }
+
+            .reservations-table tr {
+                border: 1px solid #e0e0e0;
+                margin-bottom: 15px;
+                padding: 15px;
+                background: #f9f9f9;
+            }
+
+            .reservations-table td {
+                border: none;
+                padding: 8px 0;
+                text-align: left;
+            }
+
+            .reservations-table td:before {
+                content: attr(data-label) ": ";
+                font-weight: bold;
+                text-transform: uppercase;
+                font-size: 10px;
+                letter-spacing: 1px;
+                color: #666;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header con logo e menu hamburger -->
+    <header class="header">
+        <div class="logo">
+            <img src="../images/logo.png" alt="Agriturismo il Camporosso" class="logo-img">
+        </div>
+        <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </header>
+
+   
+
+    <!-- Sezione Admin -->
+    <section class="admin-section">
+        <div class="admin-wrapper">
+            <h1 class="admin-title">Gestionale Prenotazioni</h1>
+
+            <!-- Statistiche -->
+            <div class="stats-box" id="statsBox">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalReservations">0</div>
+                    <div class="stat-label">Totale Prenotazioni</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="todayReservations">0</div>
+                    <div class="stat-label">Oggi</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="weekReservations">0</div>
+                    <div class="stat-label">Questa Settimana</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="pendingReservations">0</div>
+                    <div class="stat-label">In Attesa</div>
+                </div>
+            </div>
+
+            <!-- Controlli -->
+            <div class="admin-controls">
+                <div class="admin-search">
+                    <input type="text" id="searchInput" placeholder="Cerca per nome, email, telefono...">
+                </div>
+                <div class="admin-filters">
+                    <select id="filterDate">
+                        <option value="">Tutte le date</option>
+                        <option value="today">Oggi</option>
+                        <option value="week">Questa settimana</option>
+                        <option value="month">Questo mese</option>
+                    </select>
+                    <button class="btn-export" onclick="exportReservations()">Esporta CSV</button>
+                    <button class="btn-clear" onclick="clearAllReservations()">Elimina Tutte</button>
+                    <button class="btn-logout" onclick="logout()">Logout</button>
+                </div>
+            </div>
+
+            <!-- Tabella Prenotazioni -->
+            <div id="reservationsContainer">
+                <table class="reservations-table" id="reservationsTable">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Orario</th>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Telefono</th>
+                            <th>Ospiti</th>
+                            <th>Note</th>
+                            <th>Stato</th>
+                            <th>Conferma</th>
+                            <th>Elimina</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reservationsBody">
+                        <!-- Le prenotazioni verranno inserite qui dinamicamente -->
+                    </tbody>
+                </table>
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <h3>Nessuna prenotazione trovata</h3>
+                    <p>Le prenotazioni verranno visualizzate qui quando i clienti compilano il form.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
+    <script src="../firebase-config.js"></script>
+    <script src="auth.js"></script>
+    <script src="admin.js"></script>
+    <script>
+        // Proteggi la pagina richiedendo autenticazione
+        (async function() {
+            const authenticated = await requireAuth();
+            if (!authenticated) {
+                // Reindirizza a login.html (già fatto in requireAuth)
+                return;
+            }
+        })();
+    </script>
+</body>
+</html>
+

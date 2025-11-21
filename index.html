@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agriturismo il Camporosso</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Primary Meta Tags -->
+    <title>Agriturismo Il camporosso</title>
+    <meta name="title" content="Agriturismo Il camporosso" />
+    <meta name="description" content="Agriturismo Camporosso a Martinengo, Bergamo, dove il palato incontra il gusto." />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.agriturismocamporosso.it" />
+    <meta property="og:title" content="Agriturismo Il camporosso" />
+    <meta property="og:description" content="Agriturismo Camporosso a Martinengo, Bergamo, dove il palato incontra il gusto." />
+    <meta property="og:image" content="https://metatags.io/images/meta-tags.png" />
+
+    <!-- X (Twitter) -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://www.agriturismocamporosso.it" />
+    <meta property="twitter:title" content="Agriturismo Il camporosso" />
+    <meta property="twitter:description" content="Agriturismo Camporosso a Martinengo, Bergamo, dove il palato incontra il gusto." />
+    <meta property="twitter:image" content="https://www.agriturismocamporosso.it/images/logo.png" />
+
+    <!-- Meta Tags Generated with https://metatags.io -->
+</head>
+
+<body>
+    <!-- Header con logo e menu hamburger -->
+    <header class="header">
+        <div class="logo">
+            <img src="images/logo.png" alt="Agriturismo il Camporosso" class="logo-img">
+        </div>
+        <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </header>
+
+    <!-- Menu hamburger (chiuso di default) -->
+    <nav class="menu-overlay" id="menuOverlay">
+        <div class="menu-content">
+            <ul class="menu-list">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="prenotazione.html">Prenotazioni</a></li>
+                <li><a href="#footer">Contatti</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section con immagine a tutto schermo -->
+    <section class="hero">
+        <div class="hero-image">
+            <img src="images/inizio.JPG" alt="Composizione culinaria elegante" class="hero-img">
+            <div class="hero-overlay"></div>
+        </div>
+        <div class="hero-text">
+            <h2 class="hero-title">...E la vita cominciò con un peccato di gola...</h2>
+        </div>
+        <a href="#menu" class="scroll-indicator">
+            <span class="scroll-text">Scorri in basso</span>
+            <span class="scroll-line"></span>
+        </a>
+    </section>
+
+    <!-- Sezione Menu -->
+    <section id="menu" class="menu-section">
+        <div class="menu-wrapper">
+            <!-- Menu di navigazione orizzontale -->
+            <nav class="menu-navigation">
+                <ul class="menu-nav-list">
+                    <li><a href="#natale" class="menu-nav-link active" data-section="natale">Menu di Natale</a></li>
+                    <li><a href="#cenone" class="menu-nav-link" data-section="cenone">Menu Cenone di capodanno</a></li>
+                   <li><a href="#matrimoni" class="menu-nav-link" data-section="matrimoni">Menu Matrimoni</a></li>
+                   
+            </nav>
+
+            <!-- Menu di Natale -->
+            <div id="natale" class="menu-category active">
+                <h2 class="menu-category-title">Menu di Natale 2025</h2>
+                <p class="menu-subtitle">Calice di benvenuto alcolico e analcolico</p>
+                <div class="menu-info">
+                    <p class="menu-info-text"><strong>MENU COMPLETO</strong></p>
+                    <p class="menu-info-price"><strong>Prezzo per persona</strong> <span>60,00</span></p>
+                </div>
+
+                <div class="menu-natale-group">
+                    <h3 class="menu-natale-heading">Antipasto</h3>
+                    <ul class="dish-list">
+                        <li>Crudo di Parma e salame di nostra produzione accompagnati da gnocco fritto</li>
+                        <li>Degustazione formaggi con confettura di fichi</li>
+                        <li>Timballo di patate di Martinengo con crema al Gorgonzola D.O.P</li>
+                    </ul>
+                </div>
+
+                <div class="menu-natale-group">
+                    <h3 class="menu-natale-heading">Primi Piatti</h3>
+                    <ul class="dish-list">
+                        <li>Risotto al Franciacorta con scorza di limone e profumo di rosmarino</li>
+                        <li>Ravioli di nostra produzione ripieni di radicchio Trevisano con fonduta al Taleggio D.O.P</li>
+                    </ul>
+                </div>
+
+                <div class="menu-natale-group">
+                    <h3 class="menu-natale-heading">Secondo Piatto</h3>
+                    <ul class="dish-list">
+                        <li>Cosciotto di maiale cotto a bassa temperatura con la sua salsa</li>
+                        <li>Verdure al forno di stagione</li>
+                    </ul>
+                </div>
+
+                <div class="menu-natale-group">
+                    <h3 class="menu-natale-heading">Dessert</h3>
+                    <ul class="dish-list">
+                        <li>Panettone e pandoro con creme</li>
+                        <li>Acqua, vino e caffè compresi</li>
+                    </ul>
+                </div>
+
+                <p class="menu-note">Buone feste dallo staff.</p>
+                
+                <!-- Pulsante Prenotazione -->
+                <div class="reservation-button-container">
+                    <a href="prenotazione.html" class="reservation-button">Prenota il tuo tavolo</a>
+                </div>
+            </div>
+
+            <!-- Cenone di capodanno -->
+            <div id="cenone" class="menu-category">
+                <h2 class="menu-category-title">Cenone di Capodanno 2025</h2>
+                <div class="menu-info">
+                    <p class="menu-info-text"><strong>MENU COMPLETO</strong></p>
+                    <p class="menu-info-price"><strong>Prezzo per persona</strong> <span>90,00</span></p>
+                </div>
+
+                <div class="menu-natale-group">
+                    <h3 class="menu-natale-heading">Antipasto</h3>
+                    <ul class="dish-list">
+                        <li>Voile e vant con crema al tartufo</li>
+                        <li>Crudo di parma con gnocco fritto</li>
+                        <li>Crostone di polenta con lardo di colonata</li>
+                        <li>Polenta con moscardini</li>
+                        <li>Tartelletta ripiena di mouse al salmone e pistacchio</li>
+                    </ul>
+                </div>
+
+                <div class="menu-natale-group">
+                    <h3 class="menu-natale-heading">Primi Piatti</h3>
+                    <ul class="dish-list">
+                        <li>Risotto gamberi e scorza di lime</li>
+                        <li>Ravioli di patate di martinengo con speck croccante</li>
+                    </ul>
+                </div>
+
+                <div class="menu-natale-group">
+                    <h3 class="menu-natale-heading">Secondo Piatto</h3>
+                    <ul class="dish-list">
+                        <li>Filetto di manzo alla griglia con verdure al fornodel nostro orto</li>
+                        <li>Cotechino con lenticchie</li>
+                    </ul>
+                </div>
+
+                <div class="menu-natale-group">
+                    <h3 class="menu-natale-heading">Dessert</h3>
+                    <ul class="dish-list">
+                        <li>Torta di mele con gelato alla vaniglia</li>
+                        <li>Bottiglia di vino per brindisi incluusa</li>
+                        <li>Acqua, vino e caffè compresi</li>
+                    </ul>
+                </div>
+
+                <p class="menu-note">Buone feste dallo staff.</p>
+                
+                <!-- Pulsante Prenotazione -->
+                <div class="reservation-button-container">
+                    <a href="prenotazione.html" class="reservation-button">Prenota il tuo tavolo</a>
+                </div>
+            </div>
+
+            
+
+            <!-- Menu Matrimoni -->
+            <div id="matrimoni" class="menu-category">
+                <h2 class="menu-category-title">Menu Matrimoni</h2>
+                <p class="menu-subtitle">Proposte personalizzate per il tuo giorno speciale</p>
+                <div class="menu-info">
+                    <p class="menu-info-text"><strong>SCARICA LE NOSTRE PROPOSTE</strong></p>
+                    <p class="menu-info-price"><strong>Contattaci per un menù su misura</strong></p>
+                </div>
+                <div class="menu-download-buttons">
+                    <a href="Matrimoni Camporosso 2024.pdf" class="download-button" target="_blank">Matrimoni Camporosso</a>
+                    <a href="Proposte menu'.pdf" class="download-button" target="_blank">Proposte menu</a>
+                </div>
+                
+                <!-- Pulsante Prenotazione -->
+                <div class="reservation-button-container">
+                    <a href="prenotazione.html" class="reservation-button">Prenota il tuo tavolo</a>
+                </div>
+            </div>
+    </section>
+
+    <!-- Sezione Parallax con immagini -->
+    <section class="parallax-section">
+        <div class="parallax-image-container carousel-slide active">
+            <img src="images/1.JPG" alt="Ristorante" class="parallax-image">
+        </div>
+        <div class="parallax-image-container carousel-slide">
+            <img src="images/3.JPG" alt="Ristorante" class="parallax-image">
+        </div>
+        <div class="parallax-image-container carousel-slide">
+            <img src="images/2.JPG" alt="Ristorante" class="parallax-image">
+        </div>
+        
+        <!-- Indicatori -->
+        <div class="carousel-indicators">
+            <button class="carousel-indicator active" data-slide="0" aria-label="Immagine 1"></button>
+            <button class="carousel-indicator" data-slide="1" aria-label="Immagine 2"></button>
+            <button class="carousel-indicator" data-slide="2" aria-label="Immagine 3"></button>
+        </div>
+    </section>
+
+    <!-- Sezione Eventi -->
+    <section class="events-section">
+        <div class="events-wrapper">
+            <h2 class="events-title">Eventi Privati</h2>
+            <p class="events-subtitle">Il luogo perfetto per i tuoi momenti speciali</p>
+            
+            <div class="events-grid">
+                <div class="event-card">
+                    <h3 class="event-card-title">Cerimonie</h3>
+                    <p class="event-card-description">Celebrazioni private ed esclusive in un'atmosfera raffinata e elegante. Il nostro ristorante offre spazi esclusivi per rendere il tuo evento indimenticabile.</p>
+                </div>
+                
+                <div class="event-card">
+                    <h3 class="event-card-title">Eventi Privati</h3>
+                    <p class="event-card-description">Organizziamo eventi su misura per ogni occasione. Dai meeting aziendali alle celebrazioni personali, garantiamo un servizio impeccabile.</p>
+                </div>
+                
+                <div class="event-card">
+                    <h3 class="event-card-title">Matrimoni</h3>
+                    <p class="event-card-description">Il giorno più importante della vostra vita merita un luogo speciale. Creiamo matrimoni indimenticabili con menù personalizzati e servizio esclusivo.</p>
+                </div>
+            </div>
+            
+            <div class="events-cta">
+                <a href="https://wa.me/393472242649?text=Buongiorno,%20vorrei%20avere%20pi%C3%B9%20informazioni%20su..." target="_blank" class="events-button">Contattaci per informazioni</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-wrapper">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3 class="footer-title">Agriturismo il Camporosso</h3>
+                    <p class="footer-text">Un esperienza indimenticabile</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">Navigazione</h4>
+                    <ul class="footer-links">
+                        <li><a href="#menu">Menu</a></li>
+                        <li><a href="prenotazione.html">Prenotazioni</a></li>
+                        <li><a href="#events">Eventi</a></li>
+                        <li><a href="#contact">Contatti</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">Contatti</h4>
+                    <ul class="footer-contact">
+                        <li>Via: <span>Cascina Camporosso, Via Serioletto, 24057 Martinengo BG</span></li>
+                        <li>Email: <a href="mailto:info@agriturismocamporosso.it">info@agriturismocamporosso.it</a></li>
+                        <li>Tel: <a href="tel:+393472242649">+39 347 224 2649</a></li>
+                    </ul>
+                    <p class="footer-note">Google Maps a seconda della vostra posizione potrebbe suggerirvi di accedere a via Molino Nuovo passando da via Cortenuova; sconsigliamo questa via di accesso.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">Orari</h4>
+                    <div class="footer-hours">
+                        <div class="hours-block">
+                            <div class="days-range">Lun - Sab</div>
+                            <div class="hours-line">
+                                <span class="meal-label">Pranzo</span>
+                                <span class="hours-time">12:00 - 14:00</span>
+                            </div>
+                        </div>
+                        <div class="hours-block">
+                            <div class="days-range">Giov - Sab</div>
+                            <div class="hours-line">
+                                <span class="meal-label">Cena</span>
+                                <span class="hours-time">19:30 - 00:00 <span class="note">(su prenotazione)</span></span>
+                            </div>
+                        </div>
+                        <div class="hours-block">
+                            <div class="days-range">Domenica</div>
+                            <div class="hours-line">
+                                <span class="meal-label">Apertura</span>
+                                <span class="hours-time">12:00 - 00:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">Seguici</h4>
+                    <ul class="footer-social">
+                        <li><a href="https://www.instagram.com/agriturismocamporosso/" target="_blank">Instagram</a></li>
+                        <li><a href="https://www.facebook.com/camporossoagriturismo" target="_blank">Facebook</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="footer-copyright">&copy; 2025 Agriturismo il Camporosso. Tutti i diritti riservati | <a href="https://www.instagram.com/savoldelli.andrea" target="_blank" class="footer-credit-link"> Design by Savoldelli Andrea </a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
