@@ -600,7 +600,7 @@ async function filterReservations() {
 }
 
 // Indirizzo dell'agriturismo (da configurare)
-const AGRI_ADDRESS = 'via da configurare'; // L'utente fornirà questo dopo
+const AGRI_ADDRESS = 'Cascina Camporosso, Via Serioletto, 24057 Martinengo BG'; // L'utente fornirà questo dopo
 
 // Conferma prenotazione - apre WhatsApp con messaggio di conferma
 async function confirmReservation(phoneNumber, dateFormatted, time, customerName, reservationData) {
