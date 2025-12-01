@@ -383,18 +383,13 @@ async function displayReservations(reservations = null, options = {}) {
             e.stopPropagation();
             console.log('Click su Elimina per:', reservation.name);
             
-            // Usa direttamente l'ID della prenotazione se disponibile
-            if (reservation.id) {
-                await deleteReservation(reservation.id, true);
-            } else {
-                // Fallback: usa rejectReservation che gestisce anche il caso senza ID
-                const phone = this.getAttribute('data-phone');
-                const date = this.getAttribute('data-date');
-                const time = this.getAttribute('data-time');
-                const name = this.getAttribute('data-name');
-                const resData = this.getAttribute('data-reservation');
-                rejectReservation(phone, date, time, name, resData);
-            }
+            // Usa sempre rejectReservation per aprire WhatsApp con il messaggio di rifiuto
+            const phone = this.getAttribute('data-phone');
+            const date = this.getAttribute('data-date');
+            const time = this.getAttribute('data-time');
+            const name = this.getAttribute('data-name');
+            const resData = this.getAttribute('data-reservation');
+            rejectReservation(phone, date, time, name, resData);
         });
         
         tbody.appendChild(row);
@@ -625,7 +620,7 @@ async function rejectReservation(phoneNumber, dateFormatted, time, customerName,
     const reservation = JSON.parse(atob(reservationData));
     
     // Messaggio di rifiuto
-    const message = `Ciao ${customerName}, ci dispiace comunicarle che per il ${dateFormatted} alle ${time} non abbiamo posto disponibile. Ci scusiamo per il disagio. Se vuole può contattarci al numero +39 334 567 890 per prenotare in un altra data`;
+    const message = `Ciao ${customerName}, mi dispiace ma siamo occupati per il ${dateFormatted} alle ${time}. Ci scusiamo per il disagio.`;
     
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
